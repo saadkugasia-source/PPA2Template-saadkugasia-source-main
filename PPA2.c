@@ -3,52 +3,49 @@
 #include <time.h>
 #include "MacUILib.h"
 
-// WARNING:  This solution version is VERY OOD-tified.  Students do not have to go this far. :)
+// hi my name is saad kugasia
 
+// WARNING:  This solution version is VERY OOD-tified.  Students do not have to go this far. :)
 
 // PREPROCESSOR DIRECTIVE CONSTANTS
 // ================================
 // For program-wide constants, define them here using #define.  Add as seen needed.
-#define DIMY 15  // Default Gameboard Size
-#define DIMX 30  // Default Gameboard Size
-#define GAME_MASTER_SPEED 2000  // Default Game Delay Constant in Microseconds
+#define DIMY 15                // Default Gameboard Size
+#define DIMX 30                // Default Gameboard Size
+#define GAME_MASTER_SPEED 2000 // Default Game Delay Constant in Microseconds
 
 // GLOBAL VARIABLES
 // ================================
 int exitFlag;   // Program Exiting Flag, used to determine whether to leave the program loop and shutdown the program
-char inputChar;  // Input Character, used to store the most recent input character for the main program logic to use
-
+char inputChar; // Input Character, used to store the most recent input character for the main program logic to use
 
 // Add more variables here as needed
-char** gameBoard;  // Game Board, used to store the current state of the game board for display
+char **gameBoard; // Game Board, used to store the current state of the game board for display
 int score;
-
 
 // Object: Player
 typedef struct
 {
     int x;
     int y;
-    char symbol[4];  // Default symbol for the player
-} Player;  // <H>
+    char symbol[4]; // Default symbol for the player
+} Player;           // <H>
 
 // Object: Bullet
-typedef struct 
+typedef struct
 {
     int x;
     int y;
     char symbol;
-} Bullet;  // |
-
+} Bullet; // |
 
 // Object: Enemy
 typedef struct
 {
     int x;
     int y;
-    char symbol[4];  // Default symbol for the enemy    
-} Enemy;  // wVw
-
+    char symbol[4]; // Default symbol for the enemy
+} Enemy;            // wVw
 
 // FUNCTION PROTOTYPES
 // ================================
@@ -62,10 +59,7 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-
 // Add more function prototypes here as needed
-
-
 
 // MAIN PROGRAM
 // ===============================
@@ -76,7 +70,7 @@ int main(void)
     Initialize();
 
     // Program Loop
-    while(!exitFlag)  
+    while (!exitFlag)
     {
         GetInput();
 
@@ -91,12 +85,7 @@ int main(void)
     CleanUp();
 
     return 0;
-
 }
-
-
-
-
 
 // INITIALIZATION ROUTINE
 // ===============================
@@ -110,30 +99,25 @@ void Initialize(void)
 {
     int i, j;
 
-    // Call the MacUI Library Initialization Function 
+    // Call the MacUI Library Initialization Function
     MacUILib_init();
-    srand(time(NULL));  // Seed the random number generator
+    srand(time(NULL)); // Seed the random number generator
 
     MacUILib_printf("System Initialized...\n");
 
     // [TODO]: Initialize variables
-    exitFlag = 0;  // 0 - do not exit, non-zero - exit the program
-    score = 0;  // Initialize score
-    
+    exitFlag = 0; // 0 - do not exit, non-zero - exit the program
+    score = 0;    // Initialize score
+
     // [TODO]: Add more variables initializations here as seen needed.
 
-    // In PPA2, you must create Player, Enemy, and Bullet instances on the Heap.  
+    // In PPA2, you must create Player, Enemy, and Bullet instances on the Heap.
     // Stack instances for the three mentioned game objects will result in 5 mark deduction.
 
     MacUILib_printf("Game Ready to Start!\n");
-    
-    MacUILib_clearScreen();  // Clear the screen before starting the program loop
+
+    MacUILib_clearScreen(); // Clear the screen before starting the program loop
 }
-
-
-
-
-
 
 // INPUT COLLECTION ROUTINE - "Observe"
 // ===============================
@@ -148,24 +132,20 @@ void GetInput(void)
     //   2. If there is an input character waiting to be processed, get the character and store it as the "command"
     //      - again, read the lab manual to find out which MacUILib function you need to use.
     //   3. If there is no input character to be processed, just don't do anything and move on.
-    if(MacUILib_hasChar())
+    if (MacUILib_hasChar())
     {
-        inputChar = MacUILib_getChar();        
+        inputChar = MacUILib_getChar();
     }
 
-    // In PPA2, you will need to process additional inputs to ensure full control over our 
+    // In PPA2, you will need to process additional inputs to ensure full control over our
     // playable starship. Read Manual!
-
 }
-
-
-
 
 // MAIN LOGIC ROUTINE - "Think"
 // ===============================
-// Execute the main program logic.  
-// In this routine, we should determine the outcome of the logic using 
-//    a) current status / state / behaviour of the program, and 
+// Execute the main program logic.
+// In this routine, we should determine the outcome of the logic using
+//    a) current status / state / behaviour of the program, and
 //    b) the most recent input
 // The outcome of the logic then will be drawn on the screen.
 //
@@ -176,19 +156,12 @@ void GetInput(void)
 //    d) Check if bullet collides with enemy ships -> destroy enemy ship if collided.
 
 void RunLogic(void)
-{    
+{
     // [TODO]: Implement the features in the lab manual
-    
+
     // DO NOT print anything out.  This routine is the "thinking" part, not the "acting" part.
     // You should only update all the key program parameters here.
-     
 }
-
-
-
-
-
-
 
 // DRAW ROUTINE - "Act"
 // ===============================
@@ -203,13 +176,7 @@ void DrawScreen(void)
     // 2. Draw the contents of the Game Board (refer to Manual)
 
     // [TODO]: Complete the implementation of the above pseudocode
-    
-    
 }
-
-
-
-
 
 // DELAY ROUTINE - "Wait"
 // ===============================
@@ -220,12 +187,8 @@ void DrawScreen(void)
 void LoopDelay(void)
 {
     // [TODO]: For now, just call the MacUILib_Delay routine here, and introduce sufficient delay constant
-    MacUILib_Delay(GAME_MASTER_SPEED);  // Delay for 2000 microseconds (2 milliseconds)
+    MacUILib_Delay(GAME_MASTER_SPEED); // Delay for 2000 microseconds (2 milliseconds)
 }
-
-
-
-
 
 // TEAR-DOWN ROUTINE
 // ===============================
@@ -233,12 +196,11 @@ void LoopDelay(void)
 // This routine is VERY IMPORTANT to prevent memory leak.  We will cover this after the midterm.
 
 void CleanUp(void)
-{    
-    
+{
+
     // For now, you only need to call MacUILib_uninit() routine to shut down the MacUILib module.
     MacUILib_uninit();
 
     // In PPA2, you will have to create Player, Enemies, and Bullets on Heap.
     //  This means you will have to deallocate them here before game shutdown to prevent memory leakage.
 }
-
