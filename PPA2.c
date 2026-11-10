@@ -114,14 +114,14 @@ void Move_Player(Player *player, int dx)
 {
     if (dx == -1)
     {
-        if (player->x == 1)
-            return;  // when void is there and u need to get out of the function
-        player->x--; // to move to leftward
+        if (player->x == 1) // left boundary check
+            return;         // when void is there and u need to get out of the function just return without any expresion.
+        player->x--;        // to move to leftward
     }
     else if (dx == 1)
     {
-        if (player->x == 28)
-            return; // when void is there and u need to get out of the function
+        if (player->x == 28) // right boundary check
+            return;
         player->x++;
     }
 }
@@ -131,7 +131,7 @@ void Draw_Player(Player *player)
     gameBoard[player->y][player->x] = player->symbol[1];
     gameBoard[player->y][(player->x) - 1] = player->symbol[0];
     gameBoard[player->y][(player->x) + 1] = player->symbol[2];
-}
+} // *(*(gameBoard + y) + x) , y are rows, x is column
 
 void Undraw_Player(Player *player)
 {
@@ -191,7 +191,7 @@ void Undraw_Bullet(Bullet *bullet) // the reason i had to put Undraw_Bullet here
 {
     gameBoard[bullet->y][bullet->x] = ' ';
 }
-
+// the reason Undraw_Bullet is before Move_Bullet and Draw_Bullet because i am using it in Move_Bullet, C sequencial or procedural language
 void Move_Bullet(Bullet *bullet)
 {
     if (bullet->y == 0)
@@ -199,7 +199,7 @@ void Move_Bullet(Bullet *bullet)
         Undraw_Bullet(bullet);
         return;
     }
-    bullet->y--;
+    bullet->y--; // going from 14 to 0
 }
 
 void Draw_Bullet(Bullet *bullet)
@@ -243,7 +243,7 @@ void Initialize(void)
     // Init_Enemy();
     // enemy = (Enemy *)malloc(sizeof(Enemy));
     // Init_Enemy(enemy, (rand() % (DIMX - 2)) + 1, rand() % 5);
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < 3; i++) // because we want 3 enemies
     {
         enemies[i] = (Enemy *)malloc(sizeof(Enemy));
         Init_Enemy(enemies[i], (rand() % (DIMX - 2)) + 1, rand() % 5);
@@ -344,7 +344,7 @@ void RunLogic(void)
     int i, j;
     static int enemyMoveCounter = 0; // basically is a gloabal variable, i.e it is stored in the static part of the memory.
 
-    // Only move the enemy every 10 game ticks (adjust this number to speed up or slow down)
+    // Only move the enemy every 10 game ticks or 10 frams (adjust this number to speed up or slow down the speed of the enemy)
     enemyMoveCounter++;
     if (enemyMoveCounter >= 10)
     {
@@ -392,17 +392,6 @@ void RunLogic(void)
                     }
                 }
             }
-            // else if (bullet->y == enemy->y)
-            // {
-            //     if (bullet->x == enemy->x || bullet->x == (enemy->x) - 1 || bullet->x == (enemy->x) + 1)
-            //     {
-            //         Undraw_Enemy(enemy);
-            //         free(bullet);
-            //         bullet = NULL;
-            //         Init_Enemy(enemy, (rand() % (DIMX - 2)) + 1, rand() % 5);
-            //         score += 10;
-            //     }
-            // }
         }
     }
 
@@ -410,7 +399,7 @@ void RunLogic(void)
     {
         if (enemies[i]->y == player->y)
         {
-            if (abs(enemies[i]->x - player->x) <= 2) // to cover all cases of the player and enemies colliding
+            if (abs(enemies[i]->x - player->x) <= 2) // to cover all cases of the player and enemies colliding including the wings
             {
                 gameBoard[player->y][player->x] = ' ';
                 gameover = 1;
@@ -449,10 +438,6 @@ void DrawScreen(void)
 
     for (i = 0; i < 3; i++)
     {
-        // if (bullet != NULL)
-        // {
-        //     Draw_Bullet(bullet);
-        // }
         if (bullets[i] != NULL)
         {
             Draw_Bullet(bullets[i]);
@@ -464,7 +449,7 @@ void DrawScreen(void)
     {
         for (j = 0; j < DIMX; j++)
         {
-            MacUILib_printf("%c", gameBoard[i][j]);
+            MacUILib_printf("%c", gameBoard[i][j]); // to print chars
         }
         MacUILib_printf("\n");
     }
@@ -518,6 +503,7 @@ void CleanUp(void)
         free(gameBoard); // then finally we clean the main double pointer which is gameBoard
         gameBoard = NULL;
     }
+    // to clean the player heap memory
     free(player);
     player = NULL;
 
